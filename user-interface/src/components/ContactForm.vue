@@ -30,9 +30,19 @@ export default {
     },
     methods: {
         async onSubmit(e) {
+            console.log(JSON.stringify({ name: this.name, email: this.email, msg: this.msgText }));
             e.preventDefault();
-            let response = await fetch('http:localhost:3000/post', { name: this.name, email: this.email, msg: this.msgText });
-            console.log(response);
+            try {
+                let response = await fetch('http:localhost:3000/api/message/save', { 
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: this.name, email: this.email, msg: this.msgText })
+                });
+                console.log(await response.json());
+            } catch(err) { console.error(err); }
         }
     }
 }
