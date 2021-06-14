@@ -12,9 +12,18 @@
 
 <script>
 export default {
-  name: 'ProfileToggle',
+  name: 'NavGrid',
   props: {
     icons: Array
   }
 }
 </script>
+
+<style scoped>
+  div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 25px;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+</style>

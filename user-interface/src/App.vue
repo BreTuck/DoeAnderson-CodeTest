@@ -1,16 +1,18 @@
 <template>
   <div class="container">
-    <UserImage :imageSrc="user.image" :imageAlt="user.name"/>
-    <ProfileToggle @profile-toggle="profileToggle" :icons="icons"/>
-    <ProfileText :heading="textHeading" :body="textBody"/>
-    <ContactForm />
+      <div class="main">
+        <UserImage :imageSrc="user.image" :imageAlt="user.name"/>
+        <NavGrid @profile-toggle="profileToggle" :icons="icons"/>
+      </div>
+      <ProfileText :heading="textHeading" :body="textBody"/>
+      <ContactForm />
     <Footer />
   </div>
 </template>
 
 <script>
 import UserImage from './components/UserImage.vue'
-import ProfileToggle from './components/ProfileToggle.vue'
+import NavGrid from './components/NavGrid.vue'
 import ProfileText from './components/ProfileText.vue'
 import ContactForm from './components/ContactForm.vue'
 import Footer from './components/Footer.vue'
@@ -19,7 +21,7 @@ export default {
   name: 'App',
   components: {
     UserImage,
-    ProfileToggle,
+    NavGrid,
     ProfileText,
     ContactForm,
     Footer
@@ -41,6 +43,7 @@ export default {
           info: results[0].registered
         }
       };
+      console.log(this.user);
     },
     profileToggle(toggle) {
       this.textHeading = toggle.heading;
@@ -55,7 +58,7 @@ export default {
           id: 0,
           name: "fa fa-address-book fa-2x",
           heading: 'About Me',
-          body: function(user) { return `I am ${user.name.title} ${user.name.first} ${user.name.last}`; }
+          body: function(user) { return `I am ${user.name.title} ${user.name.first} ${user.name.last}. I am ${ user.birth_date.age } years old.`; }
         },
         { 
           id: 1,
@@ -79,7 +82,7 @@ export default {
           id: 4,
           name: "fa fa-birthday-cake fa-2x",
           heading: 'Happy Birthday to Me',
-          body: function(user) { return `${user.birth_date}`; }
+          body: function(user) { return `${user.birth_date.date}`; }
         },
         { 
           id: 5,
@@ -103,17 +106,42 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
-
+/* html, body { height: 100%; } */
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .container {
+  /* min-height: 100%; */
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+.main {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
+}
+UserImage {
+  grid-area: image;
+}
+NavGrid {
+  grid: nav;
+}
+ProfileText {
+  grid-area: description;
+}
+ContactForm {
+  grid-area: form;
+}
+Footer {
+  grid-area: footer;
+  flex-shrink: 0;
 }
 </style>

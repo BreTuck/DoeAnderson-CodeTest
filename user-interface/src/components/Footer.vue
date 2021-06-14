@@ -11,3 +11,17 @@ export default {
     name: 'Footer'
 }
 </script>
+
+<style scoped>
+    div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        border-top: solid black 5px;
+        padding-top: 4%;
+    }
+    div a { 
+        text-decoration: none;
+        color: black;
+    }
+</style>
