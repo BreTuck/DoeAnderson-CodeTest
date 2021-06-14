@@ -1,11 +1,13 @@
 <template>
   <div class="container">
       <div class="main">
-        <UserImage :imageSrc="user.image" :imageAlt="user.name"/>
-        <NavGrid @profile-toggle="profileToggle" :icons="icons"/>
-      </div>
+        <div class="heading">
+          <UserImage v-if="user" :imageSrc="user.image.picture" :imageAlt="user.image.alt"/>
+          <NavGrid @profile-toggle="profileToggle" :icons="icons"/>
+        </div>
       <ProfileText :heading="textHeading" :body="textBody"/>
       <ContactForm />
+      </div>
     <Footer />
   </div>
 </template>
@@ -30,20 +32,21 @@ export default {
     async getUser() {
       const res = await fetch('https://randomuser.me/api');
       const { results } = await res.json();
-      console.log(results[0]);
-      this.user = {
+     return {
         name: results[0].name,
         birth_date: results[0].dob,
         location: results[0].location,
         phone: results[0].phone,
         email: results[0].email,
-        image: results[0].picture.large,
+        image: {
+          picture: results[0].picture.large,
+          alt: `${results[0].name.first} ${results[0].name.last}`
+        }, 
         account: {
           credentials: results[0].login,
           info: results[0].registered
         }
       };
-      console.log(this.user);
     },
     profileToggle(toggle) {
       this.textHeading = toggle.heading;
@@ -52,7 +55,7 @@ export default {
   },
   data() { 
     return {
-     user: {},
+      user: {},
       icons: [
         { 
           id: 0,
@@ -96,7 +99,7 @@ export default {
     } 
   },
   async created() { 
-    await this.getUser(); 
+    this.user = await this.getUser(); 
     this.textHeading = this.icons[0].heading;
     this.textBody = this.icons[0].body(this.user);
 
@@ -106,27 +109,28 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
-/* html, body { height: 100%; } */
+
 #app {
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 5%;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  margin-top: 0;
 }
 .container {
-  /* min-height: 100%; */
-  display: grid;
-  grid-template-rows: 1fr auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 .main {
+  flex: 1;
+}
+.heading {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin: 10% 0 10% 0;
 }
 UserImage {
   grid-area: image;
@@ -142,6 +146,5 @@ ContactForm {
 }
 Footer {
   grid-area: footer;
-  flex-shrink: 0;
 }
 </style>

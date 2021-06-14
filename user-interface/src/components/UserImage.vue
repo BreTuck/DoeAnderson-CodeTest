@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <img v-bind:src="imageSrc" :alt="`${imageAlt.first} ${imageAlt.last}`">
+    <img :src="imageSrc" :alt="imageAlt">
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
   name: 'UserImage',
   props: {
-    imageAlt: Object,
+    imageAlt: String,
     imageSrc: String
   }
 }

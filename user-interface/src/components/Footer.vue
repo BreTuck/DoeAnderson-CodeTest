@@ -18,7 +18,7 @@ export default {
         flex-direction: row;
         justify-content: space-around;
         border-top: solid black 5px;
-        padding-top: 4%;
+        padding: 2.5% 0 2.5% 0;
     }
     div a { 
         text-decoration: none;

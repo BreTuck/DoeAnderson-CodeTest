@@ -1,17 +1,17 @@
 <template>
     <div id="form-container">
         <h3>Contact Me</h3>
-        <form>
+        <form @submit="onSubmit">
             <div class="form-control">
                 <label>Name</label>
-                <input class="inputs" type="text" name="name" />
+                <input v-model="name" type="text" name="name" />
             </div>
             <div class="form-control">
                 <label>Email</label>
-                <input class="inputs" type="email" name="email" />
+                <input v-model="email" type="email" name="email" />
             </div>
             <div class="form-control">
-                <textarea class="inputs" name="text" placeholder="How Can I Help?"></textarea>
+                <textarea v-model="msgText" name="text" placeholder="How Can I Help?"></textarea>
             </div>
             <input id="btn" type="submit" value="Submit">
         </form>
@@ -20,17 +20,31 @@
 
 <script>
 export default {
-    name:'ContactForm'
+    name:'ContactForm',
+    data () {
+        return { 
+            name: '',
+            email: '',
+            msgText: ''
+        }
+    },
+    methods: {
+        async onSubmit(e) {
+            e.preventDefault();
+            let response = await fetch('http:localhost:3000/post', { name: this.name, email: this.email, msg: this.msgText });
+            console.log(response);
+        }
+    }
 }
 </script>
 
 <style scoped>
     #form-container {
         border-top: solid black 5px;
-        margin-bottom: 10%;
+        margin-bottom: 5%;
     }
     h3 { 
-        margin-left: 20%;
+        margin-left: 10%;
         text-align: left; 
     }
     label { grid-area: labels; margin-right: 10%; }
