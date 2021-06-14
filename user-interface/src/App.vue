@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <UserImage imageSrc='https://randomuser.me/api/portraits/men/11.jpg'/>
-    <ProfileToggle />
-    <ProfileText heading='User Contact' body='Lots, Lots \n and more loads/n of text' />
+    <UserImage :imageSrc="user.image" :imageAlt="user.name"/>
+    <ProfileToggle @profile-toggle="profileToggle" :icons="icons"/>
+    <ProfileText :heading="textHeading" :body="textBody"/>
     <ContactForm />
     <Footer />
   </div>
@@ -23,6 +23,80 @@ export default {
     ProfileText,
     ContactForm,
     Footer
+  },
+  methods: {
+    async getUser() {
+      const res = await fetch('https://randomuser.me/api');
+      const { results } = await res.json();
+      console.log(results[0]);
+      this.user = {
+        name: results[0].name,
+        birth_date: results[0].dob,
+        location: results[0].location,
+        phone: results[0].phone,
+        email: results[0].email,
+        image: results[0].picture.large,
+        account: {
+          credentials: results[0].login,
+          info: results[0].registered
+        }
+      };
+    },
+    profileToggle(toggle) {
+      this.textHeading = toggle.heading;
+      this.textBody = toggle.body(this.user);
+    }
+  },
+  data() { 
+    return {
+     user: {},
+      icons: [
+        { 
+          id: 0,
+          name: "fa fa-address-book fa-2x",
+          heading: 'About Me',
+          body: function(user) { return `I am ${user.name.title} ${user.name.first} ${user.name.last}`; }
+        },
+        { 
+          id: 1,
+          name: "fa fa-map fa-2x",
+          heading: 'Where I Live',
+          body: function(user) { return `I live at ${user.location.street.number} ${user.location.street.name} ${user.location.city}, ${user.location.state} ${user.location.postcode} ${user.location.country}`; }
+        },
+        { 
+          id: 2,
+          name: "fa fa-envelope fa-2x",
+         heading: 'Contact Information - Email',
+          body: function(user) { return `${user.email}`;}
+        }
+        ,{ 
+          id: 3,
+          name: "fa fa-phone-alt fa-2x",
+          heading: 'Contact Information - Phone',
+          body: function(user) { return `${user.phone}`}
+        },
+        { 
+          id: 4,
+          name: "fa fa-birthday-cake fa-2x",
+          heading: 'Happy Birthday to Me',
+          body: function(user) { return `${user.birth_date}`; }
+        },
+        { 
+          id: 5,
+          name: "fa fa-key fa-2x",
+          heading: 'Account Information',
+          body: function(user) { return `Username: ${user.account.credentials.username}\nPassword: ${user.account.credentials.password}\nMember of ${user.account.info.age} years`; }
+        }
+      ],
+      textHeading: '', 
+      textBody: ''
+    } 
+  },
+  async created() { 
+    await this.getUser(); 
+    this.textHeading = this.icons[0].heading;
+    this.textBody = this.icons[0].body(this.user);
+
   }
 }
 </script>

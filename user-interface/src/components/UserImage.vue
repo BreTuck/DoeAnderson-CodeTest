@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <img v-bind:src="imageSrc" alt="Vue logo">
+    <img v-bind:src="imageSrc" :alt="`${imageAlt.first} ${imageAlt.last}`">
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 export default {
   name: 'UserImage',
   props: {
+    imageAlt: Object,
     imageSrc: String
   }
 }
@@ -15,18 +16,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/* h3 {
-  margin: 40px 0 0;
+img {
+  border-radius: 50%;
+  border: 5px #333 solid;
+  margin-bottom: 1rem;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-} */
 </style>
