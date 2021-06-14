@@ -29,6 +29,9 @@ export default {
         }
     },
     methods: {
+        // Given more time --> ADD VALIDATION
+
+        // Submit for data to local backend
         async onSubmit(e) {
             console.log(JSON.stringify({ name: this.name, email: this.email, msg: this.msgText }));
             e.preventDefault();

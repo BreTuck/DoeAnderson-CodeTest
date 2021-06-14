@@ -1,3 +1,10 @@
+<!--
+  Due to the small size of the frontend of this project, this is my main file of the application
+  Here I:
+    Fetch the data
+    Listen for the toggle
+    Set initial data based on fetched data
+-->
 <template>
   <div class="container">
       <div class="main">
@@ -29,10 +36,11 @@ export default {
     Footer
   },
   methods: {
+    // Fetching data from API
     async getUser() {
       const res = await fetch('https://randomuser.me/api');
       const { results } = await res.json();
-     return {
+      return {
         name: results[0].name,
         birth_date: results[0].dob,
         location: results[0].location,
@@ -48,6 +56,7 @@ export default {
         }
       };
     },
+    // Event to set current toggle from icon nav
     profileToggle(toggle) {
       this.textHeading = toggle.heading;
       this.textBody = toggle.body(this.user);
@@ -98,11 +107,12 @@ export default {
       textBody: ''
     } 
   },
+  // Set data before view is rendered, GETTING AN ERROR for data undefined on UserImage
+  // I believe that the error might be due to using the user object as prop??
   async created() { 
     this.user = await this.getUser(); 
     this.textHeading = this.icons[0].heading;
     this.textBody = this.icons[0].body(this.user);
-
   }
 }
 </script>

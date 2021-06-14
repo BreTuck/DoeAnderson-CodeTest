@@ -3,6 +3,7 @@ import { create } from './database';
 
 const router = new Router();
 
+// Route save the form data from contact me form
 router.post('/save', async(req, res) => {
     try {
         let info = {

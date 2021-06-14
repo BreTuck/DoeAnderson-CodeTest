@@ -11,6 +11,8 @@ const db_config = {
 const connection = new Pool(db_config);
 const query = async function(text, params) { return await connection.query(text, params); }
 const close = function() { connection.end(); }
+
+// PostegreSQL does not have auto-incrementing for ID
 let helpers = {
     nextId: async () => { 
         const totalUserCount = await database.query('SELECT COUNT(id) FROM messages;'); 
@@ -19,6 +21,7 @@ let helpers = {
     }
 }
 
+// DB Function for creating a record in messages table
 let create = (info) => {
     return {
         text:'INSERT INTO messages(id, name, email, msg) VALUES ($1, $2, $3, $4)', 
